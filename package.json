@@ -2,6 +2,7 @@
   "name": "dragonparse",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "bin/index.js",
   "bin": {
     "dragonparse": "bin/index.js"
