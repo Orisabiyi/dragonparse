@@ -1,7 +1,7 @@
 {
   "name": "dragonparse",
   "version": "1.0.0",
-  "description": "",
+  "description": "🐉 dragonparse: a fast, simple command-line JSON parser built with Node.js and Commander. Parse, validate, and explore JSON files straight from your terminal.",
   "type": "module",
   "main": "bin/index.js",
   "bin": {
