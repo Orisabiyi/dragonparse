@@ -21,12 +21,17 @@ program.argument("<filepath>").action(async (filepath) => {
     process.exit(1);
   }
 
-  for (let index = 0; index <= currentFileArray.length; index++) {
-    if (index === 0 && currentFileArray[index] !== "{") {
-      console.error("Error: the provider file is not a JSON document");
-      process.exit(1);
-    }
+  if (currentFileArray[0] !== "{") {
+    console.error("Error: the provider file is not a JSON document");
+    process.exit(1);
   }
+
+  // for (let index = 0; index <= currentFileArray.length; index++) {
+  //   if (index === 0 && currentFileArray[index] !== "{") {
+  //     console.error("Error: the provider file is not a JSON document");
+  //     process.exit(1);
+  //   }
+  // }
 
   console.log(currentFileArray);
 });
