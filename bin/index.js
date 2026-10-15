@@ -10,30 +10,23 @@ program.argument("<filepath>").action(async (filepath) => {
   const resolvedPath = path.resolve(filepath);
   const readFile = fs.createReadStream(resolvedPath, { encoding: "utf8" });
 
-  let currentFileArray;
+  let currentFileArray = [];
 
   for await (const chunk of readFile) {
-    currentFileArray = chunk.split("");
+    currentFileArray.push(chunk);
   }
 
-  if (!currentFileArray || !currentFileArray.length) {
-    console.error("Error: the provider file is empty, not a JSON document");
+  if (!currentFileArray.join('')) {
+    console.log("Error: the file provided is not a valid json document");
     process.exit(1);
   }
 
-  if (currentFileArray[0] !== "{") {
-    console.error("Error: the provider file is not a JSON document");
-    process.exit(1);
-  }
+  const currentFile = JSON.parse(currentFileArray.join(""));
+  console.log(currentFile);
 
-  // for (let index = 0; index <= currentFileArray.length; index++) {
-  //   if (index === 0 && currentFileArray[index] !== "{") {
-  //     console.error("Error: the provider file is not a JSON document");
-  //     process.exit(1);
-  //   }
-  // }
+  console.log(`${filepath} is a valid json document`)
 
-  console.log(currentFileArray);
+  process.exit(0);
 });
 
 program.parse();
