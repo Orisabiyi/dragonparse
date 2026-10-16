@@ -16,15 +16,40 @@ program.argument("<filepath>").action(async (filepath) => {
     currentFileArray.push(chunk);
   }
 
-  if (!currentFileArray.join('')) {
+  const currentFile = currentFileArray.join('').trim();
+  console.log(currentFile.endsWith('}'));
+
+  if (!currentFile || !currentFile.startsWith('{') || !currentFile.endsWith('}')) {
     console.log("Error: the file provided is not a valid json document");
     process.exit(1);
   }
 
-  const currentFile = JSON.parse(currentFileArray.join(""));
-  console.log(currentFile);
+  const pairs = currentFile.slice(1, -1).split(',').map(pair => pair.split(':'))
 
-  console.log(`${filepath} is a valid json document`)
+  if (currentFile.startsWith('{') && currentFile.endsWith('}') && pairs.flat().length <= 1) {
+    console.log(`File ${filepath} is a valid json document`)
+    process.exit(0)
+  }
+
+  let obj= {}
+
+  pairs.forEach(([key, value]) => {
+    console.log(key.trim(), value.trim())
+    key = key.trim().replace(/^"|"$/g, '')
+    value = value.trim().replace(/^"|"$/g, '')
+
+    obj[key] = value
+  })
+
+  console.log(obj)
+
+
+
+  // const data = Object.keys(currentFile)
+
+  // console.log(data)
+
+  // console.log(`${filepath} is a valid json document`)
 
   process.exit(0);
 });
