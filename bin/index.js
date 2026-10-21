@@ -61,6 +61,18 @@ program.argument("<filepath>").action(async (filepath) => {
       key = key.trim().replace(/^"|"$/g, "");
       value = value.trim().replace(/^"|"$/g, "");
 
+      if (value === "True") {
+        process.exit(1)
+      }
+
+      if (value === "False") {
+        process.exit(1)
+      }
+
+      if (value === "Null") {
+        process.exit(1)
+      }
+
       if (value === "true") {
         obj[key] = true;
       } else if (value === "false") {
