@@ -3,6 +3,10 @@
 import { Command } from "commander";
 import path from "path";
 import fs from "fs";
+import {
+  checkDifferentBoolConstruct,
+  checkDifferentNullConstruct,
+} from "./utils.js";
 
 const program = new Command();
 
@@ -50,6 +54,7 @@ program.argument("<filepath>").action(async (filepath) => {
     }
 
     const badJsonKey = [];
+    const badJsonValue = [];
 
     let obj = {};
 
@@ -61,16 +66,12 @@ program.argument("<filepath>").action(async (filepath) => {
       key = key.trim().replace(/^"|"$/g, "");
       value = value.trim().replace(/^"|"$/g, "");
 
-      if (value === "True") {
-        process.exit(1)
+      if (checkDifferentBoolConstruct(value) === "error") {
+        badJsonValue.push(value)
       }
 
-      if (value === "False") {
-        process.exit(1)
-      }
-
-      if (value === "Null") {
-        process.exit(1)
+      if (checkDifferentNullConstruct(value)) {
+        badJsonValue.push(value)
       }
 
       if (value === "true") {
@@ -86,7 +87,14 @@ program.argument("<filepath>").action(async (filepath) => {
 
     if (badJsonKey.length > 0) {
       console.log(
-        `The following ${badJsonKey.length > 1 ? "keys are" : "key is"} bad: ${badJsonKey.join(",").trim()}`,
+        `The following JSON ${badJsonKey.length > 1 ? "keys are" : "key is"} bad: ${badJsonKey.join(",").trim()}`,
+      );
+      process.exit(1);
+    }
+
+    if (badJsonValue.length > 0) {
+      console.log(
+        `The following JSON ${badJsonValue.length > 1 ? "values are" : "value is"} bad: ${badJsonValue.join(", ").trim()}`,
       );
       process.exit(1);
     }

@@ -1,6 +1,6 @@
 export function checkDifferentBoolConstruct(value) {
   if (typeof value !== "string") {
-    return null;
+    throw new Error("value is not a string")
   }
 
   const normalizedValue = value.toLowerCase();
@@ -10,4 +10,16 @@ export function checkDifferentBoolConstruct(value) {
   }
 
   return null
+}
+
+export function checkDifferentNullConstruct(value) {
+    if (typeof value !== "string") {
+    throw new Error("value is not a string")
+  }
+
+  const normalizedValue = value.toLowerCase();
+
+  if (normalizedValue === 'null' && value !== normalizedValue) {
+    return "error";
+  }
 }
